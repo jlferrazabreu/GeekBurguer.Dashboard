@@ -1,15 +1,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Text.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.OpenApi.Models;
 
 namespace GeekBurguer.Dashboard
 {
@@ -25,13 +19,12 @@ namespace GeekBurguer.Dashboard
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var mvcCoreBuilder = services.AddMvcCore();
+            services.AddMvc();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekBurger.Dashboard", Version = "v1" });
+            });
 
-            mvcCoreBuilder.AddFormatterMappings()
-                .AddCors()
-                .AddJsonOptions(options => {
-                    options.JsonSerializerOptions.WriteIndented = true;
-                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,14 +33,19 @@ namespace GeekBurguer.Dashboard
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GeekBurger.Dashboard v1"));
             }
 
-            app.UseMvc();
+            app.UseHttpsRedirection();
 
-            app.Run(async (context) =>
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
             {
-                await context.Response
-                   .WriteAsync("GeekBurger.Dashboard running");
+                endpoints.MapControllers();
             });
         }
     }

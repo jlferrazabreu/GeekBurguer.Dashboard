@@ -1,18 +1,40 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using GeekBurger.Dashboard.Contract;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace GeekBurguer.Dashboard.Controllers
 {
-    [Route("api/dashboard")]
+    [ApiController]
+    [Route("api/[controller]")]
     public class DashboardController : Controller
     {
-        public IActionResult GetDashboardByStoreName(string storeName)
+        private IList<Sales> SalesList = new List<Sales>();
+        private IList<UsersWithLessOffer> UsersWithLessOffersList = new List<UsersWithLessOffer>();
+
+        public DashboardController()
         {
-            return Ok();
+            SalesList.Add(new Sales { StoreName = "Paulista", Number = 10, Value = "4092.00" });
+            UsersWithLessOffersList.Add(new UsersWithLessOffer { Users = 1, Restrictions = new List<string> { "soy, dairy, peanut" } });
+            UsersWithLessOffersList.Add(new UsersWithLessOffer { Users = 2, Restrictions = new List<string> { "soy, dairy" } });
         }
 
+        [HttpGet("/sales")]
+        public IActionResult GetSales()
+        {
+            if (SalesList.Count() == 0)
+                return NotFound();
+
+            return Ok(SalesList);
+        }
+
+        [HttpGet("/UsersWithLessOffer")]
+        public IActionResult GetUsersWithLessOffer()
+        {
+            if (UsersWithLessOffersList.Count() == 0)
+                return NotFound();
+
+            return Ok(UsersWithLessOffersList);
+        }
     }
 }
