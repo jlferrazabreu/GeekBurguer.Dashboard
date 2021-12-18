@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GeekBurguer.Dashboard.Controllers
+namespace GeekBurger.Dashboard.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

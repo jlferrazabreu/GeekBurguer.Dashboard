@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace GeekBurguer.Dashboard
+namespace GeekBurger.Dashboard
 {
     public class Program
     {

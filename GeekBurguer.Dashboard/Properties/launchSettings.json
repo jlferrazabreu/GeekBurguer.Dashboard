@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "GeekBurguer.Dashboard": {
+    "GeekBurger.Dashboard": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,
